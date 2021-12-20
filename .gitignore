@@ -82,6 +82,8 @@ crashlytics-build.properties
 **/assets/assetstoretools
 /Assets/Plugins/PlasticSCM*
 /assets/plugins/PlasticSCM*
+.plastic
+
 
 .DS_Store*
 Thumbs.db
