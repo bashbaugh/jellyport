@@ -1,0 +1,4 @@
+repository "ReflectionGame@jp_ben_codejelly@cloud"
+  path "/"
+    smartbranch "/main" 
+     
