@@ -61,5 +61,6 @@ public class PortalController : MonoBehaviour
     public void ResetPortal ()
     {
         if (!alwaysActive && !deactivateOnTrigger) DeactivatePortal();
+        else if (deactivateOnTrigger) ActivatePortal();
     }
 }
