@@ -2,11 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//enum Sound
-//{
-//    move
-//}
-
 public class PlayerSoundController : MonoBehaviour
 {
     private AudioSource audioSource;

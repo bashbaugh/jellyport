@@ -7,9 +7,11 @@ public class PortalController : MonoBehaviour
     private GameObject entrance;
     private GameObject exit;
 
+    [HideInInspector]
     public PlayerController player;
 
     public bool alwaysActive;
+    public bool deactivateOnTrigger;
 
     public Sprite activeEntranceSprite;
     public Sprite activeExitSprite;
@@ -28,13 +30,7 @@ public class PortalController : MonoBehaviour
         inactiveEntraceSprite = entrance.GetComponent<SpriteRenderer>().sprite;
         inactiveExitSprite = exit.GetComponent<SpriteRenderer>().sprite;
 
-        if (alwaysActive) ActivatePortal();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (alwaysActive || deactivateOnTrigger) ActivatePortal();
     }
 
     public void OnPlayerEnter()
@@ -42,7 +38,13 @@ public class PortalController : MonoBehaviour
         if (portalsActive) player.TeleportTo(exit.transform.position);
     }
 
-    public void ActivatePortal()
+    public void TriggerPortal()
+    {
+        if (deactivateOnTrigger) DeactivatePortal();
+        else ActivatePortal();
+    }
+
+    void ActivatePortal()
     {
         portalsActive = true;
         entrance.GetComponent<SpriteRenderer>().sprite = activeEntranceSprite;
@@ -58,6 +60,6 @@ public class PortalController : MonoBehaviour
 
     public void ResetPortal ()
     {
-        if (!alwaysActive) DeactivatePortal();
+        if (!alwaysActive && !deactivateOnTrigger) DeactivatePortal();
     }
 }

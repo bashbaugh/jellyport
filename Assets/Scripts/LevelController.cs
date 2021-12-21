@@ -1,38 +1,63 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelController : MonoBehaviour
 {
     public PlayerController player;
-    public PortalController[] portals;
+    public Transform portalsParent;
     public FlagController flag;
 
     public Sprite openExitSprite;
     private Sprite closedExitSprite;
     public GameObject exit;
 
+    public string nextLevelScene;
+
+    private PortalController[] portals;
+
     private bool gameOver = false;
+    private bool gameWon = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        closedExitSprite = exit.GetComponent<SpriteRenderer>().sprite;
-        foreach (PortalController p in portals)
+        // Store a reference to all the portal controllers under the portals object:
+        Array.Resize(ref portals, portalsParent.childCount);
+        for (int i = 0; i < portalsParent.childCount; i++)
         {
-            p.player = player;
+            portals[i] = portalsParent.GetChild(i).GetComponent<PortalController>();
+            portals[i].player = player;
         }
+
+        closedExitSprite = exit.GetComponent<SpriteRenderer>().sprite;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (gameOver)
+
+        if (Input.GetKeyDown(KeyCode.Return))
         {
-            if (Input.GetKeyDown(KeyCode.Return))
+            if (gameOver)
             {
                 Restart();
             }
+
+            if (gameWon)
+            {
+                // Go to next level
+                if (nextLevelScene != "") SceneManager.LoadScene(nextLevelScene);
+                else SceneManager.LoadScene("LevelSelect");
+            }
+        }
+        
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneManager.LoadScene("LevelSelect");
         }
     }
 
@@ -40,7 +65,7 @@ public class LevelController : MonoBehaviour
     {
         foreach (PortalController p in portals)
         {
-            p.ActivatePortal();
+            p.TriggerPortal();
         }
 
 
@@ -60,10 +85,15 @@ public class LevelController : MonoBehaviour
         }
         gameOver = false;
     }
-
+    
     public void OnDie ()
     {
-        Debug.Log("Ded");
         gameOver = true;
+    }
+
+    public void OnWin ()
+    {
+        Debug.Log("Level won!");
+        gameWon = true;
     }
 }

@@ -135,7 +135,7 @@ public class PlayerController : MonoBehaviour
 
         if (goalPoint.transform.position == movePoint.position)
         {
-            Debug.Log("YOU WIN");
+            levelController.OnWin();
         } else
         {
             Die();
